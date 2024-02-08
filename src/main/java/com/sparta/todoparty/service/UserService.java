@@ -3,6 +3,9 @@ package com.sparta.todoparty.service;
 import com.sparta.todoparty.dto.UserRequsetDto;
 import com.sparta.todoparty.entity.User;
 import com.sparta.todoparty.repository.UserRepository;
+import com.sparta.todoparty.security.UserDetailsImpl;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -32,5 +35,18 @@ public class UserService {
         //User 만들기 및 repository에 저장
         User user = new User(username, password);
         userRepository.save(user);
+    }
+
+    public void login(UserRequsetDto userRequsetDto) {
+        String username = userRequsetDto.getUsername();
+        String password = userRequsetDto.getPassword();
+
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new IllegalArgumentException("등록된 유저가 없습니다."));
+
+        //패스워드가 등록된 패스워드와 일치한지 확인
+        if(!passwordEncoder.matches(password, user.getPassword())){
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        }
     }
 }
