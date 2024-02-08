@@ -6,6 +6,7 @@ import com.sparta.todoparty.dto.TodoResponseDto;
 import com.sparta.todoparty.dto.UserRequsetDto;
 import com.sparta.todoparty.security.UserDetailsImpl;
 import com.sparta.todoparty.service.TodoService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -27,6 +28,16 @@ public class TodoController {
         //UserDetailsImpl에 Getter 추가
         TodoResponseDto todoResponseDto = todoService.postTodo(requestDto, userDetails.getUser());
         return ResponseEntity.status(201).body(todoResponseDto);
+    }
+
+    @GetMapping("/{todoId}")
+    public ResponseEntity<CommonResponseDto> getTodo(@PathVariable Long todoId){
+        try {
+            TodoResponseDto responseDto = todoService.getTodo(todoId);
+            return ResponseEntity.ok().body(responseDto);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(new CommonResponseDto(e.getMessage(), HttpStatus.BAD_REQUEST.value()));
+        }
     }
 
     @GetMapping
