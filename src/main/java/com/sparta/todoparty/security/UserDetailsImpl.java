@@ -1,11 +1,13 @@
 package com.sparta.todoparty.security;
 
 import com.sparta.todoparty.entity.User;
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 
+@Getter
 public class UserDetailsImpl implements UserDetails {
 
     //실제 생성자에서 user가 들어오면
@@ -21,12 +23,12 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public String getPassword() {
-        return null;
+        return user.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return null;
+        return user.getUsername();
     }
 
     @Override
