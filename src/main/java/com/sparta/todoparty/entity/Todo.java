@@ -41,4 +41,12 @@ public class Todo {
     public void setUser(User user){
         this.user = user;
     }
+
+    //수정 관련 메서드
+    public void setTitle(String title){
+        this.title = title;
+    }
+    public void setContent(String content){
+        this.content = content;
+    }
 }

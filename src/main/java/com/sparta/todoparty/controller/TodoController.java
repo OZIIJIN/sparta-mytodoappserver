@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.RejectedExecutionException;
 
 @RestController
 @RequiredArgsConstructor
@@ -51,5 +52,17 @@ public class TodoController {
         responseDTOMap.forEach((key, value) -> responseDtoList.add(new TodoListResponseDto(key, value)));
 
         return ResponseEntity.ok().body(responseDtoList);
+    }
+
+    @PutMapping("/{todoId}")
+    public ResponseEntity<CommonResponseDto> putTodo(@PathVariable Long todoId, @RequestBody TodoRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        //UserDetailsImpl에 Getter 추가
+        TodoResponseDto todoResponseDto = null;
+        try {
+            todoResponseDto = todoService.updateTodo(todoId, requestDto, userDetails.getUser());
+            return ResponseEntity.ok().body(todoResponseDto);
+        } catch (RejectedExecutionException | IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(new CommonResponseDto(e.getMessage(), HttpStatus.BAD_REQUEST.value()));
+        }
     }
 }
