@@ -6,6 +6,7 @@ import com.sparta.todoparty.dto.UserDto;
 import com.sparta.todoparty.entity.Todo;
 import com.sparta.todoparty.entity.User;
 import com.sparta.todoparty.repository.TodoRepository;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -57,15 +58,28 @@ public class TodoService {
     @Transactional
     public TodoResponseDto updateTodo(Long todoId, TodoRequestDto requestDto, User user) {
         //TodoRequserDto에 있는 정보랑 실제 DB에 저장된 정보랑 비교
+        Todo todo = getTodo(todoId, user);
+        todo.setTitle(requestDto.getTitle());
+        todo.setContent(requestDto.getContent());
+
+        return new TodoResponseDto(todo);
+    }
+
+    @Transactional
+    public TodoResponseDto completeTodo(Long todoId, User user) {
+        Todo todo = getTodo(todoId, user);
+        todo.complete(); //완료처리
+
+        return new TodoResponseDto(todo);
+    }
+
+    private Todo getTodo(Long todoId, User user) {
         Todo todo = todoRepository.findById(todoId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 Id 입니다."));
 
         if(!user.getId().equals(todo.getId())){
             throw new RejectedExecutionException("작성자만 수정할 수 있습니다.");
         }
-        todo.setTitle(requestDto.getTitle());
-        todo.setContent(requestDto.getContent());
-
-        return new TodoResponseDto(todo);
+        return todo;
     }
 }

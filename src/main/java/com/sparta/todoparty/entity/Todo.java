@@ -26,6 +26,9 @@ public class Todo {
     @Column
     private LocalDateTime createDate;
 
+    @Column
+    private Boolean iscompleted;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
@@ -35,6 +38,7 @@ public class Todo {
         this.content = todoRequestDto.getContent();
         //생성할 때 정해짐
         this.createDate = LocalDateTime.now();
+        this.iscompleted = false;
     }
 
     //연관관계 맵핑하는 메서드
@@ -48,5 +52,9 @@ public class Todo {
     }
     public void setContent(String content){
         this.content = content;
+    }
+
+    public void complete(){
+        this.iscompleted = true;
     }
 }
