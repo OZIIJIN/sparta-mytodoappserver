@@ -8,6 +8,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/comments")
 public class CommentController {
@@ -22,5 +24,11 @@ public class CommentController {
     public CommentResponseDto createComment(@PathVariable Long todoId, @RequestBody CommentRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
 
         return commentService.createComment(todoId, requestDto, userDetails);
+    }
+
+    //할일카드의 모든 댓글 조회 기능
+    @GetMapping("{todoId}")
+    public List<CommentResponseDto> getComments(@PathVariable Long todoId){
+        return commentService.getComments(todoId);
     }
 }
