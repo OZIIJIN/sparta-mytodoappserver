@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ public class TodoController {
     private final TodoService todoService;
 
 
+    @Transactional
     @PostMapping
     public String postTodo(@RequestBody TodoRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
         //UserDetailsImpl에 Getter 추가
@@ -61,6 +63,7 @@ public class TodoController {
     }
 
     //할일카드 수정
+    @Transactional
     @PutMapping("/{todoId}")
     public String putTodo(@PathVariable Long todoId, @RequestBody TodoRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
         //UserDetailsImpl에 Getter 추가
