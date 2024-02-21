@@ -5,6 +5,7 @@ import com.sparta.todoparty.security.UserDetailsImpl;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.cglib.core.Local;
 
 import java.time.LocalDateTime;
@@ -47,6 +48,12 @@ public class Todo {
         this.iscompleted = false;
     }
 
+    public void setTitle(String s){
+        this.title = s;
+    }
+    public void setContent(String s){
+        this.content = s;
+    }
     //수정 관련 메서드
     public void update(TodoRequestDto todoRequestDto){
         this.title = todoRequestDto.getTitle();

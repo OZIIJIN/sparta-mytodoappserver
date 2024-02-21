@@ -36,6 +36,9 @@ public class Comment {
         this.createDate = LocalDateTime.now();
     }
 
+    public void setContent(String s){
+        this.content = s;
+    }
     public void update(CommentRequestDto requestDto) {
         this.content = requestDto.getContent();
     }
