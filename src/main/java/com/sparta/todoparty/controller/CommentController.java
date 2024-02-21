@@ -4,8 +4,8 @@ import com.sparta.todoparty.dto.CommentRequestDto;
 import com.sparta.todoparty.dto.CommentResponseDto;
 import com.sparta.todoparty.security.UserDetailsImpl;
 import com.sparta.todoparty.service.CommentService;
+import jakarta.validation.Valid;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,7 +23,7 @@ public class CommentController {
     //댓글 작성 기능
     @Transactional
     @PostMapping("/todo/{todoId}/create")
-    public CommentResponseDto createComment(@PathVariable Long todoId, @RequestBody CommentRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
+    public CommentResponseDto createComment(@PathVariable Long todoId, @RequestBody @Valid CommentRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
 
         return commentService.createComment(todoId, requestDto, userDetails);
     }
@@ -37,7 +37,7 @@ public class CommentController {
     //댓글 수정 기능
     @Transactional
     @PutMapping("/{commentId}")
-    public CommentResponseDto updateComment(@PathVariable Long commentId, @RequestBody CommentRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
+    public CommentResponseDto updateComment(@PathVariable Long commentId, @RequestBody @Valid CommentRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
         return commentService.updateComment(commentId, requestDto, userDetails);
     }
 

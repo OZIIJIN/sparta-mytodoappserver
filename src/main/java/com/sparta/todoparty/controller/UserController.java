@@ -26,7 +26,7 @@ public class UserController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<CommonResponseDto> signup(@Valid @RequestBody UserRequsetDto userRequestDto){
+    public ResponseEntity<CommonResponseDto> signup(@RequestBody @Valid UserRequsetDto userRequestDto){
         //IllegalArgumentException이 왔을 때 잡아줘야함
         try {
             userService.signup(userRequestDto);
@@ -39,7 +39,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<CommonResponseDto> login(@RequestBody UserRequsetDto userRequsetDto, HttpServletResponse response){
+    public ResponseEntity<CommonResponseDto> login(@RequestBody@Valid UserRequsetDto userRequsetDto, HttpServletResponse response){
         //로그인 기능을 통해서 로그인 이상이 없는지 확인하고 헤더값에 토큰을 넣어줘야함
         try {
             userService.login(userRequsetDto);

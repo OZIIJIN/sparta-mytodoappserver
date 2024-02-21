@@ -4,6 +4,7 @@ import com.sparta.todoparty.dto.*;
 import com.sparta.todoparty.entity.User;
 import com.sparta.todoparty.security.UserDetailsImpl;
 import com.sparta.todoparty.service.TodoService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +28,7 @@ public class TodoController {
 
     @Transactional
     @PostMapping
-    public String postTodo(@RequestBody TodoRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
+    public String postTodo(@RequestBody @Valid TodoRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
         //UserDetailsImpl에 Getter 추가
         TodoResponseDto todoResponseDto = todoService.postTodo(requestDto, userDetails);
         return "redirect:/api/todos/myTodos";
@@ -66,7 +67,7 @@ public class TodoController {
     //할일카드 수정
     @Transactional
     @PutMapping("/{todoId}")
-    public String putTodo(@PathVariable Long todoId, @RequestBody TodoRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
+    public String putTodo(@PathVariable Long todoId, @RequestBody @Valid TodoRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
         //UserDetailsImpl에 Getter 추가
         todoService.updateTodo(todoId, requestDto, userDetails);
         return "redirect:/api/todos/myTodos";
