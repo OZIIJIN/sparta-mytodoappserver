@@ -59,12 +59,15 @@ public class TodoService {
         return userTodoMap;
     }
 
+    //할일카드 수정
     @Transactional
-    public TodoResponseDto updateTodo(Long todoId, TodoRequestDto requestDto, User user) {
+    public TodoResponseDto updateTodo(Long todoId, TodoRequestDto requestDto, UserDetailsImpl userDetails) {
         //TodoRequserDto에 있는 정보랑 실제 DB에 저장된 정보랑 비교
-        Todo todo = getTodo(todoId, user);
-        todo.setTitle(requestDto.getTitle());
-        todo.setContent(requestDto.getContent());
+        Todo todo = todoRepository.findById(todoId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 id 입니다."));
+        if(!userDetails.getUsername().equals(todo.getUsername())){
+            throw new RejectedExecutionException("할일카드의 작성자만 수정이 가능합니다.");
+        }
+        todo.update(requestDto);
 
         return new TodoResponseDto(todo);
     }

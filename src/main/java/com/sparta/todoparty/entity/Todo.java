@@ -48,11 +48,9 @@ public class Todo {
     }
 
     //수정 관련 메서드
-    public void setTitle(String title){
-        this.title = title;
-    }
-    public void setContent(String content){
-        this.content = content;
+    public void update(TodoRequestDto todoRequestDto){
+        this.title = todoRequestDto.getTitle();
+        this.content = todoRequestDto.getContent();
     }
 
     public void complete(){

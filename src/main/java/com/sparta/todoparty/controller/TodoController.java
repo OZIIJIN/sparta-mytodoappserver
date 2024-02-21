@@ -60,17 +60,12 @@ public class TodoController {
         return ResponseEntity.ok().body(responseDtoList);
     }
 
-    @ResponseBody
+    //할일카드 수정
     @PutMapping("/{todoId}")
-    public ResponseEntity<CommonResponseDto> putTodo(@PathVariable Long todoId, @RequestBody TodoRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
+    public String putTodo(@PathVariable Long todoId, @RequestBody TodoRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
         //UserDetailsImpl에 Getter 추가
-        TodoResponseDto todoResponseDto = null;
-        try {
-            todoResponseDto = todoService.updateTodo(todoId, requestDto, userDetails.getUser());
-            return ResponseEntity.ok().body(todoResponseDto);
-        } catch (RejectedExecutionException | IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(new CommonResponseDto(e.getMessage(), HttpStatus.BAD_REQUEST.value()));
-        }
+        todoService.updateTodo(todoId, requestDto, userDetails);
+        return "redirect:/api/todos/myTodos";
     }
 
     @ResponseBody
