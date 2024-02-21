@@ -6,19 +6,24 @@ import com.sparta.todoparty.dto.UserDto;
 import com.sparta.todoparty.entity.Todo;
 import com.sparta.todoparty.entity.User;
 import com.sparta.todoparty.repository.TodoRepository;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import com.sparta.todoparty.security.UserDetailsImpl;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.RejectedExecutionException;
 
 @Service
-@RequiredArgsConstructor
 public class TodoService {
     private final TodoRepository todoRepository;
+
+    public TodoService(TodoRepository todoRepository) {
+        this.todoRepository = todoRepository;
+    }
 
     public TodoResponseDto postTodo(TodoRequestDto todoRequestDto, User user){
         Todo todo = new Todo(todoRequestDto);
@@ -82,4 +87,17 @@ public class TodoService {
         }
         return todo;
     }
+
+    //유저의 전체 할일카드 조회
+    public List<TodoResponseDto> getTodosByUserId(UserDetailsImpl userDetails) {
+        List<Todo> todos = todoRepository.findByUserId(userDetails.getUser().getId());
+        List<TodoResponseDto> responseDtoList = new ArrayList<>();
+
+        for (Todo todo : todos) {
+            responseDtoList.add(new TodoResponseDto(todo));
+        }
+
+        return responseDtoList;
+    }
+
 }

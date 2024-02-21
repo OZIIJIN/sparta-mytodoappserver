@@ -1,16 +1,13 @@
 package com.sparta.todoparty.controller;
 
 import com.sparta.todoparty.dto.*;
-import com.sparta.todoparty.entity.Todo;
-import com.sparta.todoparty.entity.User;
 import com.sparta.todoparty.security.UserDetailsImpl;
 import com.sparta.todoparty.service.TodoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -18,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.RejectedExecutionException;
 
-@RestController
+@Controller
 @RequiredArgsConstructor
 @RequestMapping("/api/todos")
 public class TodoController {
@@ -27,12 +24,13 @@ public class TodoController {
 
 
     @PostMapping
-    public ResponseEntity<TodoResponseDto> postTodo(@RequestBody TodoRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
+    public String postTodo(@RequestBody TodoRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
         //UserDetailsImpl에 Getter 추가
         TodoResponseDto todoResponseDto = todoService.postTodo(requestDto, userDetails.getUser());
-        return ResponseEntity.status(201).body(todoResponseDto);
+        return "redirect:/api/todos/myTodos";
     }
 
+    @ResponseBody
     @GetMapping("/{todoId}")
     public ResponseEntity<CommonResponseDto> getTodo(@PathVariable Long todoId){
         try {
@@ -43,6 +41,14 @@ public class TodoController {
         }
     }
 
+    //유저의 전체 할일카드 조회
+    @ResponseBody
+    @GetMapping("/myTodos")
+    public List<TodoResponseDto> getPostsByUserId(@AuthenticationPrincipal UserDetailsImpl userDetails){
+        return todoService.getTodosByUserId(userDetails);
+    }
+
+    @ResponseBody
     @GetMapping
     public ResponseEntity<List<TodoListResponseDto>> getTodoList() {
         List<TodoListResponseDto> responseDtoList = new ArrayList<>();
@@ -54,6 +60,7 @@ public class TodoController {
         return ResponseEntity.ok().body(responseDtoList);
     }
 
+    @ResponseBody
     @PutMapping("/{todoId}")
     public ResponseEntity<CommonResponseDto> putTodo(@PathVariable Long todoId, @RequestBody TodoRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
         //UserDetailsImpl에 Getter 추가
@@ -66,6 +73,7 @@ public class TodoController {
         }
     }
 
+    @ResponseBody
     @PatchMapping("/{todoId}/complete")
     public ResponseEntity<CommonResponseDto> patchTodo(@PathVariable Long todoId, @AuthenticationPrincipal UserDetailsImpl userDetails){
         //UserDetailsImpl에 Getter 추가
