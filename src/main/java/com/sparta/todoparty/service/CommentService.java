@@ -4,24 +4,28 @@ import com.sparta.todoparty.dto.CommentRequestDto;
 import com.sparta.todoparty.dto.CommentResponseDto;
 import com.sparta.todoparty.entity.Comment;
 import com.sparta.todoparty.entity.Todo;
+import com.sparta.todoparty.exception.CommentNotFoundException;
 import com.sparta.todoparty.repository.CommentRepository;
 import com.sparta.todoparty.repository.TodoRepository;
 import com.sparta.todoparty.security.UserDetailsImpl;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import java.util.Locale;
 import java.util.concurrent.RejectedExecutionException;
 
 @Service
 public class CommentService {
     private final CommentRepository commentRepository;
     private final TodoRepository todoRepository;
+    private final MessageSource messageSource;
 
-    public CommentService(CommentRepository commentRepository, TodoRepository todoRepository) {
+    public CommentService(CommentRepository commentRepository, TodoRepository todoRepository, MessageSource messageSource) {
         this.commentRepository = commentRepository;
         this.todoRepository = todoRepository;
+        this.messageSource = messageSource;
     }
 
     public CommentResponseDto createComment(Long todoId, CommentRequestDto requestDto, UserDetailsImpl userDetails) {
@@ -42,7 +46,13 @@ public class CommentService {
     }
 
     public CommentResponseDto updateComment(Long commentId, CommentRequestDto requestDto, UserDetailsImpl userDetails) {
-        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 댓글입니다."));
+        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new CommentNotFoundException(messageSource.getMessage(
+                "not.found.comment",
+                null,
+                "Not Found Comment",
+                Locale.getDefault()
+                ))
+        );
         if(!userDetails.getUsername().equals(comment.getUsername())){
             throw new RejectedExecutionException("댓글의 작성자만 수정이 가능합니다.");
         }
@@ -51,7 +61,13 @@ public class CommentService {
     }
 
     public void deleteComment(Long commentId, UserDetailsImpl userDetails) {
-        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 댓글입니다."));
+        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new CommentNotFoundException(messageSource.getMessage(
+                "not.found.comment",
+                null,
+                "Not Found Comment",
+                Locale.getDefault()
+                ))
+        );
         if(!userDetails.getUsername().equals(comment.getUsername())){
             throw new RejectedExecutionException("댓글의 작성자만 삭제가 가능합니다.");
         }
