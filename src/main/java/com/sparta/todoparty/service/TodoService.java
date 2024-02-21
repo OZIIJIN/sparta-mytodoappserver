@@ -20,9 +20,11 @@ import java.util.concurrent.RejectedExecutionException;
 @Service
 public class TodoService {
     private final TodoRepository todoRepository;
+    private final CommentService commentService;
 
-    public TodoService(TodoRepository todoRepository) {
+    public TodoService(TodoRepository todoRepository, CommentService commentService) {
         this.todoRepository = todoRepository;
+        this.commentService = commentService;
     }
 
     public TodoResponseDto postTodo(TodoRequestDto todoRequestDto, UserDetailsImpl userDetails){
@@ -102,4 +104,12 @@ public class TodoService {
         return responseDtoList;
     }
 
+    public void deleteTodo(Long todoId, UserDetailsImpl userDetails) {
+        Todo todo = todoRepository.findById(todoId).orElseThrow(()-> new IllegalArgumentException("존재하지 않는 할일카드 입니다."));
+        if(!userDetails.getUsername().equals(todo.getUsername())){
+            throw new RejectedExecutionException("게시물의 작성자만 삭제가 가능합니다.");
+        }
+        commentService.deleteCommentByTodoId(todoId);
+        todoRepository.delete(todo);
+    }
 }

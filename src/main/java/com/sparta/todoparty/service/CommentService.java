@@ -57,4 +57,8 @@ public class CommentService {
         }
         commentRepository.delete(comment);
     }
+
+    public void deleteCommentByTodoId(Long todoId) {
+        commentRepository.deleteByTodoId(todoId);
+    }
 }

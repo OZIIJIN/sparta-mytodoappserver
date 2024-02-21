@@ -1,6 +1,7 @@
 package com.sparta.todoparty.controller;
 
 import com.sparta.todoparty.dto.*;
+import com.sparta.todoparty.entity.User;
 import com.sparta.todoparty.security.UserDetailsImpl;
 import com.sparta.todoparty.service.TodoService;
 import lombok.RequiredArgsConstructor;
@@ -68,6 +69,14 @@ public class TodoController {
     public String putTodo(@PathVariable Long todoId, @RequestBody TodoRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
         //UserDetailsImpl에 Getter 추가
         todoService.updateTodo(todoId, requestDto, userDetails);
+        return "redirect:/api/todos/myTodos";
+    }
+
+    //할일카드 삭제
+    @Transactional
+    @DeleteMapping("/{todoId}")
+    public String deleteTodo(@PathVariable Long todoId, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        todoService.deleteTodo(todoId, userDetails);
         return "redirect:/api/todos/myTodos";
     }
 
