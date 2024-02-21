@@ -35,4 +35,8 @@ public class Comment {
         this.username = userDetails.getUsername();
         this.createDate = LocalDateTime.now();
     }
+
+    public void update(CommentRequestDto requestDto) {
+        this.content = requestDto.getContent();
+    }
 }

@@ -34,5 +34,11 @@ public class CommentController {
         return commentService.getComments(todoId);
     }
 
-    
+    //댓글 수정 기능
+    @Transactional
+    @PutMapping("/{commentId}")
+    public CommentResponseDto updateComment(@PathVariable Long commentId, @RequestBody CommentRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        return commentService.updateComment(commentId, requestDto, userDetails);
+    }
+
 }

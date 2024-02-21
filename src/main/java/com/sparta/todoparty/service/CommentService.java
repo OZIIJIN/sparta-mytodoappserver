@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.RejectedExecutionException;
 
 @Service
 public class CommentService {
@@ -37,5 +39,14 @@ public class CommentService {
             responseDtoList.add(new CommentResponseDto(comment));
         }
         return responseDtoList;
+    }
+
+    public CommentResponseDto updateComment(Long commentId, CommentRequestDto requestDto, UserDetailsImpl userDetails) {
+        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 댓글입니다."));
+        if(!userDetails.getUsername().equals(comment.getUsername())){
+            throw new RejectedExecutionException("할일카드의 작성자만 수정이 가능합니다.");
+        }
+        comment.update(requestDto);
+        return new CommentResponseDto(comment);
     }
 }
