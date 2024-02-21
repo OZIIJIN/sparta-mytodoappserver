@@ -26,7 +26,7 @@ public class TodoController {
     @PostMapping
     public String postTodo(@RequestBody TodoRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
         //UserDetailsImpl에 Getter 추가
-        TodoResponseDto todoResponseDto = todoService.postTodo(requestDto, userDetails.getUser());
+        TodoResponseDto todoResponseDto = todoService.postTodo(requestDto, userDetails);
         return "redirect:/api/todos/myTodos";
     }
 

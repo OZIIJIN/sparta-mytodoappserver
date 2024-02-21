@@ -25,9 +25,8 @@ public class TodoService {
         this.todoRepository = todoRepository;
     }
 
-    public TodoResponseDto postTodo(TodoRequestDto todoRequestDto, User user){
-        Todo todo = new Todo(todoRequestDto);
-        todo.setUser(user);
+    public TodoResponseDto postTodo(TodoRequestDto todoRequestDto, UserDetailsImpl userDetails){
+        Todo todo = new Todo(todoRequestDto, userDetails);
         todoRepository.save(todo);
         return new TodoResponseDto(todo);
     }

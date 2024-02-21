@@ -1,6 +1,7 @@
 package com.sparta.todoparty.entity;
 
 import com.sparta.todoparty.dto.TodoRequestDto;
+import com.sparta.todoparty.security.UserDetailsImpl;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,6 +25,9 @@ public class Todo {
     private String content;
 
     @Column
+    private String username;
+
+    @Column
     private LocalDateTime createDate;
 
     @Column
@@ -33,17 +37,14 @@ public class Todo {
     @JoinColumn(name = "user_id")
     private User user;
 
-    public Todo(TodoRequestDto todoRequestDto){
+    public Todo(TodoRequestDto todoRequestDto, UserDetailsImpl userDetails){
         this.title = todoRequestDto.getTitle();
         this.content = todoRequestDto.getContent();
+        this.username = userDetails.getUsername();
+        this.user = userDetails.getUser();
         //생성할 때 정해짐
         this.createDate = LocalDateTime.now();
         this.iscompleted = false;
-    }
-
-    //연관관계 맵핑하는 메서드
-    public void setUser(User user){
-        this.user = user;
     }
 
     //수정 관련 메서드
