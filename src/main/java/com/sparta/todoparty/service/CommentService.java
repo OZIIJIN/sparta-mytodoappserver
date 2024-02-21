@@ -44,9 +44,17 @@ public class CommentService {
     public CommentResponseDto updateComment(Long commentId, CommentRequestDto requestDto, UserDetailsImpl userDetails) {
         Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 댓글입니다."));
         if(!userDetails.getUsername().equals(comment.getUsername())){
-            throw new RejectedExecutionException("할일카드의 작성자만 수정이 가능합니다.");
+            throw new RejectedExecutionException("댓글의 작성자만 수정이 가능합니다.");
         }
         comment.update(requestDto);
         return new CommentResponseDto(comment);
+    }
+
+    public void deleteComment(Long commentId, UserDetailsImpl userDetails) {
+        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 댓글입니다."));
+        if(!userDetails.getUsername().equals(comment.getUsername())){
+            throw new RejectedExecutionException("댓글의 작성자만 삭제가 가능합니다.");
+        }
+        commentRepository.delete(comment);
     }
 }

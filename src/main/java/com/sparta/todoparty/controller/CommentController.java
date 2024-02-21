@@ -41,4 +41,11 @@ public class CommentController {
         return commentService.updateComment(commentId, requestDto, userDetails);
     }
 
+    //댓글 삭제 기능
+    @Transactional
+    @DeleteMapping("/{commentId}")
+    public void deleteComment(@PathVariable Long commentId, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        commentService.deleteComment(commentId, userDetails);
+    }
+
 }
