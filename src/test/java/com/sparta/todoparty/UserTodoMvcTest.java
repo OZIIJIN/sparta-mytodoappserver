@@ -21,6 +21,7 @@ import org.springframework.context.annotation.FilterType;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -96,6 +97,32 @@ public class UserTodoMvcTest {
             )
             .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/api/todos/myTodos"))
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("할일카드 등록 실패")
+    void test2() throws Exception{
+        //given
+        this.mockUserSetuo();
+        String title = "";
+        String content = "내용";
+        TodoRequestDto requestDto = new TodoRequestDto();
+        requestDto.setTitle(title);
+        requestDto.setContent(content);
+
+        String postInfo = objectMapper.writeValueAsString(requestDto);
+
+        //when - then
+        mvc.perform(post("/api/todos")
+                        .content(postInfo)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .principal(mockPrincipal)
+                )
+                .andExpect(status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.errorMessage").value("제목을 입력하세요."))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.statusCode").value(400))
                 .andDo(print());
     }
 }
