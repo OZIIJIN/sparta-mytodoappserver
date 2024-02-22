@@ -1,7 +1,6 @@
 package com.sparta.todoparty.controller;
 
 import com.sparta.todoparty.dto.*;
-import com.sparta.todoparty.entity.User;
 import com.sparta.todoparty.security.UserDetailsImpl;
 import com.sparta.todoparty.service.TodoService;
 import jakarta.validation.Valid;
@@ -36,9 +35,9 @@ public class TodoController {
 
     @ResponseBody
     @GetMapping("/{todoId}")
-    public ResponseEntity<CommonResponseDto> getTodo(@PathVariable Long todoId){
+    public ResponseEntity<CommonResponseDto> getTodoByTodoId(@PathVariable Long todoId){
         try {
-            TodoResponseDto responseDTO = todoService.getTodo(todoId);
+            TodoResponseDto responseDTO = todoService.getTodoByTodoId(todoId);
             return ResponseEntity.ok().body(responseDTO);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new CommonResponseDto(e.getMessage(), HttpStatus.BAD_REQUEST.value()));
