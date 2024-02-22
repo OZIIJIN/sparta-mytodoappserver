@@ -27,7 +27,7 @@ public class TodoService {
         this.commentService = commentService;
     }
 
-    public TodoResponseDto postTodo(TodoRequestDto todoRequestDto, UserDetailsImpl userDetails){
+    public TodoResponseDto postTodo(TodoRequestDto todoRequestDto, UserDetailsImpl userDetails) {
         Todo todo = new Todo(todoRequestDto, userDetails);
         todoRepository.save(todo);
         return new TodoResponseDto(todo);

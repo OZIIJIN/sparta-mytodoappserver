@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 @Table(name = "todos")
 public class Todo {
@@ -48,12 +49,6 @@ public class Todo {
         this.iscompleted = false;
     }
 
-    public void setTitle(String s){
-        this.title = s;
-    }
-    public void setContent(String s){
-        this.content = s;
-    }
     //수정 관련 메서드
     public void update(TodoRequestDto todoRequestDto){
         this.title = todoRequestDto.getTitle();
