@@ -76,13 +76,13 @@ public class TodoService {
 
     @Transactional
     public TodoResponseDto completeTodo(Long todoId, User user) {
-        Todo todo = getTodoByTodoId(todoId, user);
+        Todo todo = getTodo(todoId, user);
         todo.complete(); //완료처리
 
         return new TodoResponseDto(todo);
     }
 
-    private Todo getTodoByTodoId(Long todoId, User user) {
+    private Todo getTodo(Long todoId, User user) {
         Todo todo = todoRepository.findById(todoId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 Id 입니다."));
 
