@@ -70,6 +70,22 @@ public class UserRequestDtoTest implements CommonTest {
 				.contains("username을 입력하세요.");
 		}
 
+		@Test
+		void 생성_실패_잘못된_password() {
+			// given
+			UserRequsetDto userRequsetDto = new UserRequsetDto();
+			setDto(userRequsetDto, TEST_USER_NAME, "password!");
+
+			// when
+			Set<ConstraintViolation<UserRequsetDto>> violations = validate(userRequsetDto);
+
+			// then
+			assertThat(violations).hasSize(1); // 몇개 틀렸는지 hasSize
+			assertThat(violations)
+				.extracting("message") //"message"에 있는 값을 뽑아 올 때, extracting
+				.contains("a-z, A-z, 0-9, 글자길이 8-15");
+		}
+
 	}
 
 	private Set<ConstraintViolation<UserRequsetDto>> validate(UserRequsetDto userRequestDTO) {
