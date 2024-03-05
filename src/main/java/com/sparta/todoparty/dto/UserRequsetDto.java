@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter
-@Setter
 public class UserRequsetDto {
 
     @NotBlank(message = "username을 입력하세요.")
