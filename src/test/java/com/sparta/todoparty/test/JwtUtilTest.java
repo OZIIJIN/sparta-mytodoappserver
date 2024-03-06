@@ -1,6 +1,9 @@
 package com.sparta.todoparty.test;
 
+import static com.sparta.todoparty.jwt.JwtUtil.BEARER_PREFIX;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.BDDMockito.given;
 
 import com.sparta.todoparty.jwt.JwtUtil;
 import jakarta.servlet.http.HttpServletRequest;
@@ -37,4 +40,18 @@ public class JwtUtilTest implements CommonTest{
 		assertNotNull(token);
 	}
 
+	@DisplayName("토큰 추출")
+	@Test
+	void resolveToken() {
+		// given
+		var token = "test-token";
+		var bearerToken = BEARER_PREFIX + token;
+
+		// when
+		given(request.getHeader(JwtUtil.AUTHORIZATION_HEADER)).willReturn(bearerToken);
+		var resolvedToken = jwtUtil.resolveToken(request);
+
+		// then
+		assertEquals(token, resolvedToken);
+	}
 }
