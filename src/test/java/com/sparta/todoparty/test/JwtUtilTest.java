@@ -90,4 +90,17 @@ public class JwtUtilTest implements CommonTest{
 		}
 	}
 
+	@DisplayName("토큰에서 UserInfo 조회")
+	@Test
+	void getUserInfoFromToken() {
+		// given
+		String token = jwtUtil.createToken(TEST_USER_NAME).substring(7);
+
+		// when
+		Claims claims = jwtUtil.getUserInfoFromToken(token);
+		// then
+		assertNotNull(claims);
+		assertEquals(TEST_USER_NAME, claims.getSubject());
+	}
+
 }
