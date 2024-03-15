@@ -28,7 +28,7 @@ public class CommentController {
 		@RequestBody @Valid CommentRequestDto requestDto,
 		@AuthenticationPrincipal UserDetailsImpl userDetails) {
 
-		return commentService.createComment(todoId, requestDto, userDetails.getUser());
+		return commentService.createComment(todoId, requestDto, userDetails.getUserEntity());
 	}
 
 	//할일카드의 전체 댓글 조회 기능
@@ -43,7 +43,7 @@ public class CommentController {
 	public CommentResponseDto updateComment(@PathVariable Long commentId,
 		@RequestBody @Valid CommentRequestDto requestDto,
 		@AuthenticationPrincipal UserDetailsImpl userDetails) {
-		return commentService.updateComment(commentId, requestDto, userDetails.getUser());
+		return commentService.updateComment(commentId, requestDto, userDetails.getUserEntity());
 	}
 
 	//댓글 삭제 기능
@@ -51,7 +51,7 @@ public class CommentController {
 	@DeleteMapping("/{commentId}")
 	public void deleteComment(@PathVariable Long commentId,
 		@AuthenticationPrincipal UserDetailsImpl userDetails) {
-		commentService.deleteComment(commentId, userDetails.getUser());
+		commentService.deleteComment(commentId, userDetails.getUserEntity());
 	}
 
 }

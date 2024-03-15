@@ -1,11 +1,12 @@
 package com.sparta.todoparty.user.controller;
 
-import com.sparta.todoparty.comment.dto.CommonResponseDto;
+import com.sparta.todoparty.common.ResponseDto;
 import com.sparta.todoparty.user.dto.UserRequsetDto;
 import com.sparta.todoparty.jwt.JwtUtil;
-import com.sparta.todoparty.user.service.UserService;
+import com.sparta.todoparty.user.service.UserBusinessService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,38 +18,38 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/users")
 public class UserController {
 
-    private final UserService userService;
-    private final JwtUtil jwtUtil;
+	private final UserBusinessService userBusinessService;
+	private final JwtUtil jwtUtil;
 
-    public UserController(UserService userService, JwtUtil jwtUtil) {
-        this.userService = userService;
-        this.jwtUtil = jwtUtil;
-    }
+	public UserController(UserBusinessService userBusinessService, JwtUtil jwtUtil) {
+		this.userBusinessService = userBusinessService;
+		this.jwtUtil = jwtUtil;
+	}
 
-    @PostMapping("/signup")
-    public ResponseEntity<CommonResponseDto> signup(@RequestBody @Valid UserRequsetDto userRequestDto){
-        //IllegalArgumentException이 왔을 때 잡아줘야함
-        try {
-            userService.signup(userRequestDto);
-        } catch (IllegalArgumentException exception) {
-            return ResponseEntity.badRequest().body(new CommonResponseDto("중복된 username 입니다.", HttpStatus.BAD_REQUEST.value()));
-        }
+	@PostMapping("/signup")
+	public ResponseEntity<ResponseDto> signup(
+		@RequestBody @Valid UserRequsetDto userRequestDto) {
 
-        return ResponseEntity.status(201).body(new CommonResponseDto("회원가입 성공", 201));
-        //여기서 201 -> HttpStatus.CREATED.value() 할 수 있음
-    }
+		userBusinessService.signup(userRequestDto);
 
-    @PostMapping("/login")
-    public ResponseEntity<CommonResponseDto> login(@RequestBody@Valid UserRequsetDto userRequsetDto, HttpServletResponse response){
-        //로그인 기능을 통해서 로그인 이상이 없는지 확인하고 헤더값에 토큰을 넣어줘야함
-        try {
-            userService.login(userRequsetDto);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(new CommonResponseDto(e.getMessage(), HttpStatus.BAD_REQUEST.value()));
-        }
+		return ResponseEntity.ok()
+			.body(ResponseDto.builder()
+				.message("회원 가입 성공")
+				.data(null)
+				.build());
+	}
 
-        response.setHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(userRequsetDto.getUsername()));
+	@PostMapping("/login")
+	public ResponseEntity<ResponseDto> login(
+		@RequestBody @Valid UserRequsetDto userRequsetDto) {
+		userBusinessService.login(userRequsetDto);
 
-        return ResponseEntity.ok().body(new CommonResponseDto("로그인 성공", HttpStatus.OK.value()));
-    }
+		return ResponseEntity.ok()
+			.header(HttpHeaders.AUTHORIZATION,
+				jwtUtil.createToken(userRequsetDto.getUsername()))
+			.body(ResponseDto.<Void>builder()
+				.message("로그인 성공")
+				.build());
+	}
+
 }

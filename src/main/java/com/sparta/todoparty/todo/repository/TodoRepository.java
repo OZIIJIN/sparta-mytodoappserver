@@ -1,10 +1,13 @@
 package com.sparta.todoparty.todo.repository;
 
-import com.sparta.todoparty.todo.entity.Todo;
-import org.springframework.data.jpa.repository.JpaRepository;
+import com.sparta.todoparty.todo.entity.TodoEntity;
+import java.util.Optional;
 
-import java.util.List;
+public interface TodoRepository {
 
-public interface TodoRepository extends JpaRepository<Todo, Long> {
-    List<Todo> findByUserId(Long userId);
+	Optional<TodoEntity> findById(Long todoId);
+
+	TodoEntity save(TodoEntity todoEntity);
+
+	void delete(TodoEntity todoEntity);
 }

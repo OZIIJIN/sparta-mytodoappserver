@@ -1,10 +1,15 @@
 package com.sparta.todoparty.user.repository;
 
-import com.sparta.todoparty.user.entity.User;
-import org.springframework.data.jpa.repository.JpaRepository;
-
+import com.sparta.todoparty.user.entity.UserEntity;
 import java.util.Optional;
 
-public interface UserRepository  extends JpaRepository<User, Long> {
-    Optional<User> findByUsername(String username);
+public interface UserRepository {
+
+	void
+	save(UserEntity userEntity);
+
+	Optional<UserEntity> findByUsername(String username);
+
+	Optional<UserEntity> findById(Long userId);
+
 }

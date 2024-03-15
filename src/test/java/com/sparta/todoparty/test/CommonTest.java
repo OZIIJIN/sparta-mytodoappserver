@@ -1,7 +1,7 @@
 package com.sparta.todoparty.test;
 
 
-import com.sparta.todoparty.user.entity.User;
+import com.sparta.todoparty.user.entity.UserEntity;
 
 public interface CommonTest {
 	String ANOTHER_PREFIX = "another-";
@@ -10,12 +10,12 @@ public interface CommonTest {
 	String TEST_USER_NAME = "username";
 	String TEST_USER_PASSWORD = "password";
 
-	User TEST_USER = User.builder()
+	UserEntity TEST_USER_ENTITY = UserEntity.builder()
 		.username(TEST_USER_NAME)
 		.password(TEST_USER_PASSWORD)
 		.build();
 
-	User TEST_ANOTHER_USER = User.builder()
+	UserEntity TEST_ANOTHER_USER_ENTITY = UserEntity.builder()
 		.username(ANOTHER_PREFIX + TEST_USER_NAME)
 		.password(ANOTHER_PREFIX + TEST_USER_PASSWORD)
 		.build();

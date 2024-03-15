@@ -1,7 +1,8 @@
 package com.sparta.todoparty.todo.entity;
 
+import com.sparta.todoparty.common.TimeStamp;
 import com.sparta.todoparty.todo.dto.TodoRequestDto;
-import com.sparta.todoparty.user.entity.User;
+import com.sparta.todoparty.user.entity.UserEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,10 +12,9 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor
-@Table(name = "todos")
-public class Todo {
+@Table(name = "tb_todo")
+public class TodoEntity extends TimeStamp {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -26,32 +26,22 @@ public class Todo {
     private String content;
 
     @Column
-    private String username;
-
-    @Column
-    private LocalDateTime createDate;
-
-    @Column
     private Boolean iscompleted;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    @Column
+    private Long createdBy;
 
-    public Todo(TodoRequestDto todoRequestDto, User user){
+    public TodoEntity(TodoRequestDto todoRequestDto, Long userId) {
         this.title = todoRequestDto.getTitle();
         this.content = todoRequestDto.getContent();
-        this.username = user.getUsername();
-        this.user = user;
-        //생성할 때 정해짐
-        this.createDate = LocalDateTime.now();
+        this.createdBy = userId;
         this.iscompleted = false;
     }
 
     //수정 관련 메서드
-    public void update(TodoRequestDto todoRequestDto){
-        this.title = todoRequestDto.getTitle();
-        this.content = todoRequestDto.getContent();
+    public void update(String newTitle, String newContent){
+        this.title = newTitle;
+        this.content = newContent;
     }
 
     public void complete(){

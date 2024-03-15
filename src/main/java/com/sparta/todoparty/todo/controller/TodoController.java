@@ -1,12 +1,11 @@
 package com.sparta.todoparty.todo.controller;
 
-import com.sparta.todoparty.comment.dto.CommonResponseDto;
+
+import com.sparta.todoparty.common.ResponseDto;
 import com.sparta.todoparty.security.UserDetailsImpl;
-import com.sparta.todoparty.todo.dto.TodoListResponseDto;
 import com.sparta.todoparty.todo.dto.TodoRequestDto;
 import com.sparta.todoparty.todo.dto.TodoResponseDto;
-import com.sparta.todoparty.todo.service.TodoService;
-import com.sparta.todoparty.user.dto.UserDto;
+import com.sparta.todoparty.todo.service.TodoBusinessService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,92 +15,96 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.RejectedExecutionException;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/todos")
 public class TodoController {
 
-	private final TodoService todoService;
+	private final TodoBusinessService todoBusinessService;
 
 
 	@Transactional
 	@PostMapping
-	public String postTodo(@RequestBody @Valid TodoRequestDto requestDto,
+	public ResponseEntity<ResponseDto> postTodo(
+		@RequestBody @Valid TodoRequestDto requestDto,
 		@AuthenticationPrincipal UserDetailsImpl userDetails) {
 		//UserDetailsImpl에 Getter 추가
-		TodoResponseDto todoResponseDto = todoService.postTodo(requestDto, userDetails.getUser());
-		return "redirect:/api/todos/myTodos";
+
+		TodoResponseDto responseDto = todoBusinessService.postTodo(requestDto,
+			userDetails.getUserEntity());
+
+		return ResponseEntity.ok()
+			.body(ResponseDto.builder()
+				.message("할일카드 작성 성공")
+				.data(responseDto)
+				.build());
 	}
 
 	@ResponseBody
 	@GetMapping("/{todoId}")
-	public ResponseEntity<CommonResponseDto> getTodoByTodoId(@PathVariable Long todoId) {
-		try {
-			TodoResponseDto responseDTO = todoService.getTodoByTodoId(todoId);
-			return ResponseEntity.ok().body(responseDTO);
-		} catch (IllegalArgumentException e) {
-			return ResponseEntity.badRequest()
-				.body(new CommonResponseDto(e.getMessage(), HttpStatus.BAD_REQUEST.value()));
-		}
+	public ResponseEntity<ResponseDto> getTodoByTodoId(@PathVariable Long todoId) {
+
+		TodoResponseDto responseDto = todoBusinessService.getTodoByTodoId(todoId);
+
+		return ResponseEntity.ok()
+			.body(ResponseDto.builder()
+				.message("할일카드 조회 성공")
+				.data(responseDto)
+				.build());
 	}
 
-	//유저의 전체 할일카드 조회
-	@ResponseBody
-	@GetMapping("/myTodos")
-	public List<TodoResponseDto> getPostsByUserId(
-		@AuthenticationPrincipal UserDetailsImpl userDetails) {
-		return todoService.getTodosByUserId(userDetails.getUser());
-	}
-
-	@ResponseBody
-	@GetMapping
-	public ResponseEntity<List<TodoListResponseDto>> getTodoList() {
-		List<TodoListResponseDto> responseDtoList = new ArrayList<>();
-
-		Map<UserDto, List<TodoResponseDto>> responseDTOMap = todoService.getUserTodoMap();
-
-		responseDTOMap.forEach(
-			(key, value) -> responseDtoList.add(new TodoListResponseDto(key, value)));
-
-		return ResponseEntity.ok().body(responseDtoList);
-	}
+//	@ResponseBody
+//	@GetMapping("/myTodos")
+//	public List<TodoResponseDto> getPostsByUserId(
+//		@AuthenticationPrincipal UserDetailsImpl userDetails) {
+//		return todoBusinessService.getTodosByUserId(userDetails.getUserEntity());
+//	}
 
 	//할일카드 수정
 	@Transactional
 	@PutMapping("/{todoId}")
-	public String putTodo(@PathVariable Long todoId, @RequestBody @Valid TodoRequestDto requestDto,
+	public ResponseEntity<ResponseDto> updateTodo(@PathVariable Long todoId,
+		@RequestBody @Valid TodoRequestDto requestDto,
 		@AuthenticationPrincipal UserDetailsImpl userDetails) {
-		//UserDetailsImpl에 Getter 추가
-		todoService.updateTodo(todoId, requestDto, userDetails.getUser());
-		return "redirect:/api/todos/myTodos";
+
+		TodoResponseDto responseDto = todoBusinessService.updateTodo(todoId, requestDto,
+			userDetails.getUserEntity());
+
+		return ResponseEntity.ok()
+			.body(ResponseDto.builder()
+				.message("할일카드 수정 성공")
+				.data(responseDto)
+				.build());
 	}
 
 	//할일카드 삭제
 	@Transactional
 	@DeleteMapping("/{todoId}")
-	public String deleteTodo(@PathVariable Long todoId,
+	public ResponseEntity<ResponseDto> deleteTodo(@PathVariable Long todoId,
 		@AuthenticationPrincipal UserDetailsImpl userDetails) {
-		todoService.deleteTodo(todoId, userDetails.getUser());
-		return "redirect:/api/todos/myTodos";
+		todoBusinessService.deleteTodo(todoId, userDetails.getUserEntity());
+		return ResponseEntity.ok()
+			.body(ResponseDto.builder()
+				.message("할일카드 삭제 성공")
+				.data(null)
+				.build());
 	}
 
-	@ResponseBody
+	@Transactional
 	@PatchMapping("/{todoId}/complete")
-	public ResponseEntity<CommonResponseDto> patchTodo(@PathVariable Long todoId,
+	public ResponseEntity<ResponseDto> patchTodo(@PathVariable Long todoId,
 		@AuthenticationPrincipal UserDetailsImpl userDetails) {
-		//UserDetailsImpl에 Getter 추가
-		TodoResponseDto todoResponseDto = null;
-		try {
-			todoResponseDto = todoService.completeTodo(todoId, userDetails.getUser());
-			return ResponseEntity.ok().body(todoResponseDto);
-		} catch (RejectedExecutionException | IllegalArgumentException e) {
-			return ResponseEntity.badRequest()
-				.body(new CommonResponseDto(e.getMessage(), HttpStatus.BAD_REQUEST.value()));
-		}
+
+		TodoResponseDto responseDto = todoBusinessService.completeTodo(todoId,
+			userDetails.getUserEntity());
+
+		return ResponseEntity.ok()
+			.body(ResponseDto.builder()
+				.message("완료처리 성공")
+				.data(responseDto)
+				.build());
 	}
 }

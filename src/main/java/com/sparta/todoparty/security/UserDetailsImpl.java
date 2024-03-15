@@ -1,6 +1,6 @@
 package com.sparta.todoparty.security;
 
-import com.sparta.todoparty.user.entity.User;
+import com.sparta.todoparty.user.entity.UserEntity;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,10 +11,10 @@ import java.util.Collection;
 public class UserDetailsImpl implements UserDetails {
 
     //실제 생성자에서 user가 들어오면
-    private final User user;
+    private final UserEntity userEntity;
 
-    public UserDetailsImpl(User user){
-        this.user = user;
+    public UserDetailsImpl(UserEntity userEntity){
+        this.userEntity = userEntity;
     }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -23,12 +23,12 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public String getPassword() {
-        return user.getPassword();
+        return userEntity.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return user.getUsername();
+        return userEntity.getUsername();
     }
 
     @Override

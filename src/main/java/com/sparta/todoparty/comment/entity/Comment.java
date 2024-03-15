@@ -1,7 +1,7 @@
 package com.sparta.todoparty.comment.entity;
 
 import com.sparta.todoparty.comment.dto.CommentRequestDto;
-import com.sparta.todoparty.user.entity.User;
+import com.sparta.todoparty.user.entity.UserEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @NoArgsConstructor
-@Table(name = "comments")
+@Table(name = "tb_comment")
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,10 +29,10 @@ public class Comment {
     @Column
     private Long todoId;
 
-    public Comment(Long todoId, CommentRequestDto requestDto, User user){
+    public Comment(Long todoId, CommentRequestDto requestDto, UserEntity userEntity){
         this.todoId = todoId;
         this.content = requestDto.getContent();
-        this.username = user.getUsername();
+        this.username = userEntity.getUsername();
         this.createDate = LocalDateTime.now();
     }
 

@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.util.ReflectionTestUtils;
 
-public class UserRequestDtoTest implements CommonTest {
+public class UserEntityRequestDtoTest implements CommonTest {
 
 	private <T> void setDto(T dto, String username, String password) {
 		ReflectionTestUtils.setField(dto, "username", username);

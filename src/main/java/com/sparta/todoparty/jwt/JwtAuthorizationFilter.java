@@ -44,6 +44,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                 Claims info = jwtUtil.getUserInfoFromToken(token); //이 Claim이 유저정보를 담고 있음
 
                 //username -> user 조회 -> userDetails 에 담고 -> authentication의 principal에 담고
+
                 String username = info.getSubject();
                 setAuthentication(username);
             } catch (Exception e) {
