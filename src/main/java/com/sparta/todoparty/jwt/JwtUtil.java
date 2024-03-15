@@ -87,6 +87,7 @@ public class JwtUtil {
                         .setSubject(username)
                         .setExpiration(new Date(date.getTime() + TOKEN_TIME))
                         .setIssuedAt(date)
+                        // hearder에 들어갈 내용 및 서명을 하기 위한
                         .signWith(key, signatureAlgorithm)
                         .compact();
     }

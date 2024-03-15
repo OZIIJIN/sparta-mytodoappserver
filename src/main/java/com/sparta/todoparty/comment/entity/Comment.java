@@ -1,0 +1,45 @@
+package com.sparta.todoparty.comment.entity;
+
+import com.sparta.todoparty.comment.dto.CommentRequestDto;
+import com.sparta.todoparty.user.entity.User;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
+
+@Entity
+@Getter
+@NoArgsConstructor
+@Table(name = "comments")
+public class Comment {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column
+    private String content;
+
+    @Column
+    private String username;
+
+    @Column
+    private LocalDateTime createDate;
+
+    @Column
+    private Long todoId;
+
+    public Comment(Long todoId, CommentRequestDto requestDto, User user){
+        this.todoId = todoId;
+        this.content = requestDto.getContent();
+        this.username = user.getUsername();
+        this.createDate = LocalDateTime.now();
+    }
+
+    public void setContent(String s){
+        this.content = s;
+    }
+    public void update(CommentRequestDto requestDto) {
+        this.content = requestDto.getContent();
+    }
+}

@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sparta.todoparty.jwt.JwtAuthorizationFilter;
 import com.sparta.todoparty.jwt.JwtUtil;
 import com.sparta.todoparty.security.UserDetailsService;
-import com.sparta.todoparty.service.UserService;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

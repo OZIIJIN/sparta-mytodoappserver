@@ -1,6 +1,6 @@
 package com.sparta.todoparty.security;
 
-import com.sparta.todoparty.entity.User;
+import com.sparta.todoparty.user.entity.User;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

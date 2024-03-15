@@ -1,7 +1,7 @@
 package com.sparta.todoparty.test;
 
 
-import com.sparta.todoparty.entity.User;
+import com.sparta.todoparty.user.entity.User;
 
 public interface CommonTest {
 	String ANOTHER_PREFIX = "another-";

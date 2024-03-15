@@ -2,7 +2,7 @@ package com.sparta.todoparty.domain.user;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.sparta.todoparty.dto.UserRequsetDto;
+import com.sparta.todoparty.user.dto.UserRequsetDto;
 import com.sparta.todoparty.test.CommonTest;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
