@@ -1,5 +1,7 @@
 package com.sparta.todoparty.todo.repository;
 
+import com.querydsl.core.Tuple;
+import com.sparta.todoparty.todo.dto.TodoWithComments;
 import com.sparta.todoparty.todo.entity.TodoEntity;
 import java.util.List;
 import java.util.Optional;
@@ -16,4 +18,5 @@ public interface TodoRepository {
 
 	List<TodoEntity> findAllCompleted(Long userId);
 
+	List<TodoWithComments> getTodos(Long todoId);
 }

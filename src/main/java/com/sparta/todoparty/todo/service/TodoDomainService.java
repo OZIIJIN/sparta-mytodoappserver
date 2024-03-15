@@ -1,12 +1,17 @@
 package com.sparta.todoparty.todo.service;
 
+import com.querydsl.core.Tuple;
+import com.sparta.todoparty.common.PageDTO;
 import com.sparta.todoparty.todo.domain.TodoDomain;
+import com.sparta.todoparty.todo.dto.TodoSerchDto;
+import com.sparta.todoparty.todo.dto.TodoWithComments;
 import com.sparta.todoparty.todo.entity.TodoEntity;
 import com.sparta.todoparty.todo.repository.TodoRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.RejectedExecutionException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -70,5 +75,9 @@ public class TodoDomainService {
 		List<TodoEntity> todos = todoRepository.findAllCompleted(userId);
 
 		return todos.stream().map(TodoDomain::from).toList();
+	}
+
+	public List<TodoWithComments> getTodos(Long todoId) {
+		return todoRepository.getTodos(todoId);
 	}
 }

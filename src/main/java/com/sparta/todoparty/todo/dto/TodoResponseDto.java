@@ -8,13 +8,14 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Getter
-@Setter
 @AllArgsConstructor
+@NoArgsConstructor
 public class TodoResponseDto {
 
     private Long todoId;
@@ -40,7 +41,7 @@ public class TodoResponseDto {
         this.createAt = todoDomain.getCreateAt();
         this.modifiedAt = todoDomain.getModifiedAt();
         this.createdBy = todoDomain.getCreatedBy();
-        this.isCompleted = todoDomain.getIsCompleted();
-    }
+        this.isCompleted = todoDomain.getIsCompleted();}
+
 
 }

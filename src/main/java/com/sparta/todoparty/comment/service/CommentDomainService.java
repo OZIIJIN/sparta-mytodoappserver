@@ -4,6 +4,9 @@ import com.sparta.todoparty.comment.domain.CommentDomain;
 import com.sparta.todoparty.comment.entity.CommentEntity;
 import com.sparta.todoparty.comment.repository.CommentRespository;
 import com.sparta.todoparty.exception.CommentNotFoundException;
+import com.sparta.todoparty.todo.domain.TodoDomain;
+import com.sparta.todoparty.todo.entity.TodoEntity;
+import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.RejectedExecutionException;
 import lombok.RequiredArgsConstructor;
@@ -49,5 +52,10 @@ public class CommentDomainService {
 
 	public void deleteByTodoId(Long todoId) {
 		commentRespository.deleteByRegisteredAt(todoId);
+	}
+
+	public List<CommentDomain> getCommentsBy(Long todoId) {
+		List<CommentEntity> commentEntities = commentRespository.findAllByResiteredAt(todoId);
+		return commentEntities.stream().map(CommentDomain::from).toList();
 	}
 }

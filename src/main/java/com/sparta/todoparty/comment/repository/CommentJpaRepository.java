@@ -8,4 +8,6 @@ import java.util.List;
 public interface CommentJpaRepository extends JpaRepository<CommentEntity, Long> {
 
     void deleteByRegisteredAt(Long todoId);
+
+    List<CommentEntity> findAllByRegisteredAt(Long todoId);
 }

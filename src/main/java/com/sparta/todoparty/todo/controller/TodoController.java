@@ -1,14 +1,20 @@
 package com.sparta.todoparty.todo.controller;
 
 
+import com.querydsl.core.Tuple;
+import com.sparta.todoparty.common.PageDTO;
 import com.sparta.todoparty.common.ResponseDto;
 import com.sparta.todoparty.security.UserDetailsImpl;
 import com.sparta.todoparty.todo.dto.TodoListResponseDto;
 import com.sparta.todoparty.todo.dto.TodoRequestDto;
 import com.sparta.todoparty.todo.dto.TodoResponseDto;
+import com.sparta.todoparty.todo.dto.TodoWithComments;
+import com.sparta.todoparty.todo.entity.TodoEntity;
 import com.sparta.todoparty.todo.service.TodoBusinessService;
 import jakarta.validation.Valid;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,15 +45,25 @@ public class TodoController {
 				.build());
 	}
 
+//	@GetMapping("/{todoId}")
+//	public ResponseEntity<ResponseDto> getTodoByTodoId(@PathVariable Long todoId) {
+//
+//		TodoResponseDto responseDto = todoBusinessService.getTodoByTodoId(todoId);
+//
+//		return ResponseEntity.ok()
+//			.body(ResponseDto.builder()
+//				.message("할일카드 조회 성공")
+//				.data(responseDto)
+//				.build());
+//	}
+
 	@GetMapping("/{todoId}")
-	public ResponseEntity<ResponseDto> getTodoByTodoId(@PathVariable Long todoId) {
-
-		TodoResponseDto responseDto = todoBusinessService.getTodoByTodoId(todoId);
-
+	public ResponseEntity<ResponseDto<?>> getTodos(@PathVariable Long todoId) {
+		List<TodoWithComments> list = todoBusinessService.getTodos(todoId);
 		return ResponseEntity.ok()
 			.body(ResponseDto.builder()
-				.message("할일카드 조회 성공")
-				.data(responseDto)
+				.message("tjdrhd")
+				.data(list)
 				.build());
 	}
 

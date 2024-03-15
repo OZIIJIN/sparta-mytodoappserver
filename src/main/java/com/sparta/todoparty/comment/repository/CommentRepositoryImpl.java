@@ -1,6 +1,7 @@
 package com.sparta.todoparty.comment.repository;
 
 import com.sparta.todoparty.comment.entity.CommentEntity;
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -29,5 +30,10 @@ public class CommentRepositoryImpl implements CommentRespository{
 	@Override
 	public void deleteByRegisteredAt(Long todoId) {
 		commentJpaRepository.deleteByRegisteredAt(todoId);
+	}
+
+	@Override
+	public List<CommentEntity> findAllByResiteredAt(Long todoId) {
+		return commentJpaRepository.findAllByRegisteredAt(todoId);
 	}
 }

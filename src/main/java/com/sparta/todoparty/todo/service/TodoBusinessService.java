@@ -1,15 +1,24 @@
 package com.sparta.todoparty.todo.service;
 
+import com.querydsl.core.Tuple;
+import com.sparta.todoparty.comment.domain.CommentDomain;
+import com.sparta.todoparty.comment.dto.CommentResponseDto;
 import com.sparta.todoparty.comment.service.CommentDomainService;
+import com.sparta.todoparty.common.PageDTO;
 import com.sparta.todoparty.todo.domain.TodoDomain;
 import com.sparta.todoparty.todo.dto.TodoListResponseDto;
 import com.sparta.todoparty.todo.dto.TodoRequestDto;
 import com.sparta.todoparty.todo.dto.TodoResponseDto;
+import com.sparta.todoparty.todo.dto.TodoSerchDto;
+import com.sparta.todoparty.todo.dto.TodoWithComments;
 import com.sparta.todoparty.todo.entity.TodoEntity;
 import com.sparta.todoparty.user.domain.UserDomain;
 import com.sparta.todoparty.user.entity.UserEntity;
 import com.sparta.todoparty.user.service.UserDomainService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.jaxb.SpringDataJaxb.PageDto;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,10 +41,15 @@ public class TodoBusinessService {
 		return new TodoResponseDto(savedTodo);
 	}
 
-	public TodoResponseDto getTodoByTodoId(Long todoId) {
-		TodoDomain todoDomain = todoDomainService.getTodo(todoId);
-		return new TodoResponseDto(todoDomain);
-	}
+//	public TodoResponseDto getTodoByTodoId(Long todoId) {
+//		TodoDomain todoDomain = todoDomainService.getTodo(todoId);
+//		List<CommentDomain> commentDomains = commentDomainService.getCommentsBy(todoId);
+//		List<CommentResponseDto> commentResponseDtos = commentDomains.stream().map(
+//			CommentResponseDto::new).toList();
+//		TodoResponseDto todoResponseDto = new TodoResponseDto(todoDomain);
+//		todoResponseDto.addList(commentResponseDtos);
+//		return todoResponseDto;
+//	}
 
 
 	//할일카드 수정
@@ -89,5 +103,9 @@ public class TodoBusinessService {
 			.toList();
 
 		return new TodoListResponseDto(todoResponseDtos);
+	}
+
+	public List<TodoWithComments> getTodos(Long todoId) {
+		return todoDomainService.getTodos(todoId);
 	}
 }
