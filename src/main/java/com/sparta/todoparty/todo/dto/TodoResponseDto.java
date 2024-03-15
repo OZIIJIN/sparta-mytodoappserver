@@ -1,7 +1,12 @@
 package com.sparta.todoparty.todo.dto;
 
+import com.sparta.todoparty.comment.domain.CommentDomain;
+import com.sparta.todoparty.comment.dto.CommentRequestDto;
+import com.sparta.todoparty.comment.dto.CommentResponseDto;
 import com.sparta.todoparty.todo.domain.TodoDomain;
+import java.util.List;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -26,6 +31,9 @@ public class TodoResponseDto {
 
     private Boolean isCompleted;
 
+    private List<CommentResponseDto> commentList;
+
+    @Builder
     public TodoResponseDto(TodoDomain todoDomain) {
         this.todoId = todoDomain.getTodoId();
         this.title = todoDomain.getTitle();
@@ -34,5 +42,9 @@ public class TodoResponseDto {
         this.modifiedAt = todoDomain.getModifiedAt();
         this.createdBy = todoDomain.getCreatedBy();
         this.isCompleted = todoDomain.getIsCompleted();
+    }
+
+    public void addComment(CommentResponseDto comment) {
+        this.commentList.add(comment);
     }
 }

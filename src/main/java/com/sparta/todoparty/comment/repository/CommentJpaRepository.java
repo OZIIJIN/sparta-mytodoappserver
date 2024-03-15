@@ -5,8 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface CommentRepository extends JpaRepository<CommentEntity, Long> {
+public interface CommentJpaRepository extends JpaRepository<CommentEntity, Long> {
     List<CommentEntity> findByTodoIdOrderByCreateDate(Long todoId);
 
-    void deleteByTodoId(Long todoId);
+    void deleteByRegisteredAt(Long todoId);
 }

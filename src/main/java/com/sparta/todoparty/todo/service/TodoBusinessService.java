@@ -1,5 +1,6 @@
 package com.sparta.todoparty.todo.service;
 
+import com.sparta.todoparty.comment.service.CommentDomainService;
 import com.sparta.todoparty.todo.domain.TodoDomain;
 import com.sparta.todoparty.todo.dto.TodoListResponseDto;
 import com.sparta.todoparty.todo.dto.TodoRequestDto;
@@ -20,6 +21,7 @@ public class TodoBusinessService {
 
 	private final TodoDomainService todoDomainService;
 	private final UserDomainService userDomainService;
+	private final CommentDomainService commentDomainService;
 
 	public TodoResponseDto postTodo(TodoRequestDto todoRequestDto, UserEntity userEntity) {
 		UserDomain userDomain = userDomainService.getUser(userEntity.getUsername());
@@ -61,6 +63,7 @@ public class TodoBusinessService {
 
 	public void deleteTodo(Long todoId, UserEntity userEntity) {
 		UserDomain userDomain = userDomainService.getUser(userEntity.getUsername());
+		commentDomainService.deleteByTodoId(todoId);
 		todoDomainService.delete(todoId, userDomain.getUserId());
 	}
 
