@@ -30,17 +30,15 @@ public class CommentBusinessService {
 
 	private final CommentDomainService commentDomainService;
 	private final UserDomainService userDomainService;
-	private final TodoDomainService todoDomainService;
 
 
-	public TodoResponseDto createComment(Long todoId, String content, UserEntity userEntity) {
+	public CommentResponseDto createComment(Long todoId, String content, UserEntity userEntity) {
 		UserDomain userDomain = userDomainService.getUser(userEntity.getUsername());
 		CommentEntity commentEntity = new CommentEntity(todoId, content, userDomain.getUserId());
 		CommentResponseDto commentResponseDto = new CommentResponseDto(
 			commentDomainService.save(commentEntity));
-		TodoResponseDto todoResponseDto = new TodoResponseDto(todoDomainService.getTodo(todoId));
-		todoResponseDto.addComment(commentResponseDto);
-		return todoResponseDto;
+
+		return commentResponseDto;
 	}
 
 	public CommentResponseDto updateComment(Long commentId, CommentRequestDto requestDto,

@@ -25,18 +25,18 @@ public class CommentController {
 	//댓글 작성 기능
 	@Transactional
 	@PostMapping("/todos/{todoId}/comments")
-	public ResponseEntity<ResponseDto<TodoResponseDto>> createComment(@PathVariable Long todoId,
+	public ResponseEntity<ResponseDto<CommentResponseDto>> createComment(@PathVariable Long todoId,
 		@RequestBody @Valid CommentRequestDto requestDto,
 		@AuthenticationPrincipal UserDetailsImpl userDetails) {
 
 		String content = requestDto.getContent();
-		TodoResponseDto responseDto = commentBusinessService.createComment(todoId, content,
-			userDetails.getUserEntity());
+		CommentResponseDto commentResponseDto = commentBusinessService.createComment(todoId,
+			content, userDetails.getUserEntity());
 
 		return ResponseEntity.ok()
-			.body(ResponseDto.<TodoResponseDto>builder()
-				.message("할일카드 작성 성공")
-				.data(responseDto)
+			.body(ResponseDto.<CommentResponseDto>builder()
+				.message("댓글 작성 성공")
+				.data(commentResponseDto)
 				.build());
 	}
 

@@ -31,7 +31,6 @@ public class TodoResponseDto {
 
     private Boolean isCompleted;
 
-    private List<CommentResponseDto> commentList;
 
     @Builder
     public TodoResponseDto(TodoDomain todoDomain) {
@@ -44,7 +43,4 @@ public class TodoResponseDto {
         this.isCompleted = todoDomain.getIsCompleted();
     }
 
-    public void addComment(CommentResponseDto comment) {
-        this.commentList.add(comment);
-    }
 }
