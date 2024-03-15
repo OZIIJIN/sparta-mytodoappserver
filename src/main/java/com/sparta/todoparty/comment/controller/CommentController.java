@@ -40,12 +40,6 @@ public class CommentController {
 				.build());
 	}
 
-	//할일카드의 전체 댓글 조회 기능
-	@GetMapping("/{todoId}")
-	public List<CommentResponseDto> getComments(@PathVariable Long todoId) {
-		return commentBusinessService.getComments(todoId);
-	}
-
 	//댓글 수정 기능
 	@Transactional
 	@PutMapping("/comments/{commentId}")
