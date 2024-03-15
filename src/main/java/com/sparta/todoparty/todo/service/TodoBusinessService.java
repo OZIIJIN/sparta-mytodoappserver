@@ -1,7 +1,7 @@
 package com.sparta.todoparty.todo.service;
 
 import com.sparta.todoparty.todo.domain.TodoDomain;
-import com.sparta.todoparty.todo.dto.MyTodoListResponseDto;
+import com.sparta.todoparty.todo.dto.TodoListResponseDto;
 import com.sparta.todoparty.todo.dto.TodoRequestDto;
 import com.sparta.todoparty.todo.dto.TodoResponseDto;
 import com.sparta.todoparty.todo.entity.TodoEntity;
@@ -64,7 +64,7 @@ public class TodoBusinessService {
 		todoDomainService.delete(todoId, userDomain.getUserId());
 	}
 
-	public MyTodoListResponseDto getTodosByUserId(UserEntity userEntity) {
+	public TodoListResponseDto getTodosByUserId(UserEntity userEntity) {
 		UserDomain userDomain = userDomainService.getUser(userEntity.getUsername());
 
 		List<TodoDomain> todoDomainList = todoDomainService.getTodosByUserId(
@@ -73,6 +73,18 @@ public class TodoBusinessService {
 		List<TodoResponseDto> todoResponseDtos = todoDomainList.stream().map(TodoResponseDto::new)
 			.toList();
 
-		return new MyTodoListResponseDto(todoResponseDtos);
+		return new TodoListResponseDto(todoResponseDtos);
+	}
+
+	public TodoListResponseDto getCompletedTodos(UserEntity userEntity) {
+		UserDomain userDomain = userDomainService.getUser(userEntity.getUsername());
+
+		List<TodoDomain> todoDomainList = todoDomainService.getCompletedTodos(
+			userDomain.getUserId());
+
+		List<TodoResponseDto> todoResponseDtos = todoDomainList.stream().map(TodoResponseDto::new)
+			.toList();
+
+		return new TodoListResponseDto(todoResponseDtos);
 	}
 }

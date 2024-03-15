@@ -5,10 +5,10 @@ import lombok.Getter;
 import java.util.List;
 
 @Getter
-public class MyTodoListResponseDto {
+public class TodoListResponseDto {
     private List<TodoResponseDto> todoList;
 
-    public MyTodoListResponseDto(List<TodoResponseDto> todoList){
+    public TodoListResponseDto(List<TodoResponseDto> todoList){
         this.todoList = todoList;
     }
 }

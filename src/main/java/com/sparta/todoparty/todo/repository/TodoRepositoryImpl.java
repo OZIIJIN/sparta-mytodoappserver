@@ -1,9 +1,13 @@
 package com.sparta.todoparty.todo.repository;
 
+import static com.sparta.todoparty.todo.entity.QTodoEntity.todoEntity;
+
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.sparta.todoparty.todo.entity.TodoEntity;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -11,6 +15,8 @@ import org.springframework.stereotype.Repository;
 public class TodoRepositoryImpl implements TodoRepository{
 
 	private final TodoJpaRepository jpaRepository;
+
+	private final JPAQueryFactory jpaQueryFactory;
 
 	@Override
 	public Optional<TodoEntity> findById(Long todoId) {
@@ -29,6 +35,18 @@ public class TodoRepositoryImpl implements TodoRepository{
 
 	@Override
 	public List<TodoEntity> findAllById(Long userId) {
-		return jpaRepository.findAllByCreatedBy(userId);
+		return jpaQueryFactory.selectFrom(todoEntity)
+			.where(todoEntity.createdBy.eq(userId),todoEntity.iscompleted.eq(false))
+			.orderBy(todoEntity.modifiedAt.desc())
+			.fetch();
 	}
+
+	@Override
+	public List<TodoEntity> findAllCompleted(Long userId) {
+		return jpaQueryFactory.selectFrom(todoEntity)
+			.where(todoEntity.createdBy.eq(userId),todoEntity.iscompleted.eq(true))
+			.orderBy(todoEntity.modifiedAt.desc())
+			.fetch();
+	}
+
 }

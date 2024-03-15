@@ -13,4 +13,7 @@ public interface TodoRepository {
 	void delete(TodoEntity todoEntity);
 
 	List<TodoEntity> findAllById(Long userId);
+
+	List<TodoEntity> findAllCompleted(Long userId);
+
 }

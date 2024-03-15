@@ -3,7 +3,7 @@ package com.sparta.todoparty.todo.controller;
 
 import com.sparta.todoparty.common.ResponseDto;
 import com.sparta.todoparty.security.UserDetailsImpl;
-import com.sparta.todoparty.todo.dto.MyTodoListResponseDto;
+import com.sparta.todoparty.todo.dto.TodoListResponseDto;
 import com.sparta.todoparty.todo.dto.TodoRequestDto;
 import com.sparta.todoparty.todo.dto.TodoResponseDto;
 import com.sparta.todoparty.todo.service.TodoBusinessService;
@@ -39,7 +39,6 @@ public class TodoController {
 				.build());
 	}
 
-	@ResponseBody
 	@GetMapping("/{todoId}")
 	public ResponseEntity<ResponseDto> getTodoByTodoId(@PathVariable Long todoId) {
 
@@ -52,13 +51,28 @@ public class TodoController {
 				.build());
 	}
 
-	@GetMapping("/mytodos")
-	public ResponseEntity<ResponseDto<MyTodoListResponseDto>> getPostsByUserId(
+
+	@GetMapping("/my-todos")
+	public ResponseEntity<ResponseDto<TodoListResponseDto>> getMyTodos(
 		@AuthenticationPrincipal UserDetailsImpl userDetails) {
-		MyTodoListResponseDto list = todoBusinessService.getTodosByUserId(userDetails.getUserEntity());
+		TodoListResponseDto list = todoBusinessService.getTodosByUserId(
+			userDetails.getUserEntity());
 		return ResponseEntity.ok()
-			.body(ResponseDto.<MyTodoListResponseDto>builder()
+			.body(ResponseDto.<TodoListResponseDto>builder()
 				.message("내가 작성한 할일카드 조회 성공")
+				.data(list)
+				.build());
+	}
+
+	@GetMapping("/complete")
+	public ResponseEntity<ResponseDto<TodoListResponseDto>> getCompletedTodos(
+		@AuthenticationPrincipal UserDetailsImpl userDetails) {
+		TodoListResponseDto list = todoBusinessService.getCompletedTodos(
+			userDetails.getUserEntity());
+
+		return ResponseEntity.ok()
+			.body(ResponseDto.<TodoListResponseDto>builder()
+				.message("완료된 할일카드 조회 성공")
 				.data(list)
 				.build());
 	}

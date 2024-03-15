@@ -65,4 +65,10 @@ public class TodoDomainService {
 
 		return todos.stream().map(TodoDomain::from).toList();
 	}
+
+	public List<TodoDomain> getCompletedTodos(Long userId) {
+		List<TodoEntity> todos = todoRepository.findAllCompleted(userId);
+
+		return todos.stream().map(TodoDomain::from).toList();
+	}
 }

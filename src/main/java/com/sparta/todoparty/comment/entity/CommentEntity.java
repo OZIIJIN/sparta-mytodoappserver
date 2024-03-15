@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor
 @Table(name = "tb_comment")
-public class Comment {
+public class CommentEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -29,7 +29,7 @@ public class Comment {
     @Column
     private Long todoId;
 
-    public Comment(Long todoId, CommentRequestDto requestDto, UserEntity userEntity){
+    public CommentEntity(Long todoId, CommentRequestDto requestDto, UserEntity userEntity){
         this.todoId = todoId;
         this.content = requestDto.getContent();
         this.username = userEntity.getUsername();

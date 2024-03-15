@@ -1,6 +1,6 @@
 package com.sparta.todoparty.comment.dto;
 
-import com.sparta.todoparty.comment.entity.Comment;
+import com.sparta.todoparty.comment.entity.CommentEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,11 +21,11 @@ public class CommentResponseDto {
 
     private Long todoId;
 
-    public CommentResponseDto(Comment comment){
-        this.id = comment.getId();
-        this.content = comment.getContent();
-        this.username = comment.getUsername();
-        this.createDate = comment.getCreateDate();
-        this.todoId = comment.getTodoId();
+    public CommentResponseDto(CommentEntity commentEntity){
+        this.id = commentEntity.getId();
+        this.content = commentEntity.getContent();
+        this.username = commentEntity.getUsername();
+        this.createDate = commentEntity.getCreateDate();
+        this.todoId = commentEntity.getTodoId();
     }
 }
