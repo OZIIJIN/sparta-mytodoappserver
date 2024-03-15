@@ -19,4 +19,6 @@ public interface TodoRepository {
 	List<TodoEntity> findAllCompleted(Long userId);
 
 	List<TodoWithComments> getTodos(Long todoId);
+
+	List<TodoWithComments> getAllTodos();
 }

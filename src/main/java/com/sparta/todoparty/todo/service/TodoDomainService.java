@@ -80,4 +80,8 @@ public class TodoDomainService {
 	public List<TodoWithComments> getTodos(Long todoId) {
 		return todoRepository.getTodos(todoId);
 	}
+
+	public List<TodoWithComments> getAllTodos() {
+		return todoRepository.getAllTodos();
+	}
 }

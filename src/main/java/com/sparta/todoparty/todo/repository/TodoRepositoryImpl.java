@@ -67,6 +67,21 @@ public class TodoRepositoryImpl implements TodoRepository {
 			.where(todoEntity.id.eq(todoId))
 			.fetch();
 
+		return getTodoWithComments(tuples);
+	}
+
+	@Override
+	public List<TodoWithComments> getAllTodos() {
+		List<Tuple> tuples = jpaQueryFactory
+			.select(todoEntity, commentEntity)
+			.from(todoEntity)
+			.leftJoin(commentEntity).on(todoEntity.id.eq(commentEntity.registeredAt))
+			.fetch();
+
+		return getTodoWithComments(tuples);
+	}
+
+	private List<TodoWithComments> getTodoWithComments(List<Tuple> tuples) {
 		Map<Long, TodoWithComments> todoMap = new HashMap<>();
 
 		for (Tuple tuple : tuples) {

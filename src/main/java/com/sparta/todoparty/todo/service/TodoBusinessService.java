@@ -108,4 +108,8 @@ public class TodoBusinessService {
 	public List<TodoWithComments> getTodos(Long todoId) {
 		return todoDomainService.getTodos(todoId);
 	}
+
+	public List<TodoWithComments> getAllTodos() {
+		return todoDomainService.getAllTodos();
+	}
 }

@@ -58,15 +58,24 @@ public class TodoController {
 //	}
 
 	@GetMapping("/{todoId}")
-	public ResponseEntity<ResponseDto<?>> getTodos(@PathVariable Long todoId) {
+	public ResponseEntity<ResponseDto<?>> getTodoById(@PathVariable Long todoId) {
 		List<TodoWithComments> list = todoBusinessService.getTodos(todoId);
 		return ResponseEntity.ok()
 			.body(ResponseDto.builder()
-				.message("tjdrhd")
+				.message("조회 성공")
 				.data(list)
 				.build());
 	}
 
+	@GetMapping
+	public ResponseEntity<ResponseDto<?>> getAllTodos() {
+		List<TodoWithComments> list = todoBusinessService.getAllTodos();
+		return ResponseEntity.ok()
+			.body(ResponseDto.builder()
+				.message("조회 성공")
+				.data(list)
+				.build());
+	}
 
 	@GetMapping("/my-todos")
 	public ResponseEntity<ResponseDto<TodoListResponseDto>> getMyTodos(
