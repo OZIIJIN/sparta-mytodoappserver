@@ -5,7 +5,10 @@ import static com.sparta.todoparty.todo.entity.QTodoEntity.todoEntity;
 
 import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.sparta.todoparty.comment.domain.CommentDomain;
+import com.sparta.todoparty.comment.dto.CommentResponseDto;
 import com.sparta.todoparty.comment.entity.CommentEntity;
+import com.sparta.todoparty.todo.domain.TodoDomain;
 import com.sparta.todoparty.todo.dto.TodoResponseDto;
 import com.sparta.todoparty.todo.dto.TodoWithComments;
 import com.sparta.todoparty.todo.entity.TodoEntity;
@@ -14,6 +17,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -86,12 +90,26 @@ public class TodoRepositoryImpl implements TodoRepository {
 
 		for (Tuple tuple : tuples) {
 			TodoEntity todoEntity = tuple.get(0, TodoEntity.class);
-			CommentEntity commentEntity = tuple.get(1, CommentEntity.class);
+			if (todoEntity != null) {
+				TodoResponseDto todoResponseDto = new TodoResponseDto(TodoDomain.from(todoEntity));
 
-			TodoWithComments todoWithComments = todoMap.getOrDefault(todoEntity.getId(),
-				new TodoWithComments(todoEntity, new ArrayList<>()));
-			todoWithComments.getComments().add(commentEntity);
-			todoMap.put(todoEntity.getId(), todoWithComments);
+				CommentEntity commentEntity = tuple.get(1, CommentEntity.class);
+				if (commentEntity != null) {
+					CommentResponseDto commentResponseDto = new CommentResponseDto(
+						CommentDomain.from(commentEntity));
+
+					TodoWithComments todoWithComments = todoMap.getOrDefault(todoEntity.getId(),
+						new TodoWithComments(todoResponseDto, new ArrayList<>()));
+					todoWithComments.getComments().add(commentResponseDto);
+					todoMap.put(todoEntity.getId(), todoWithComments);
+				} else {
+
+					TodoWithComments todoWithComments = todoMap.getOrDefault(todoEntity.getId(),
+						new TodoWithComments(todoResponseDto, new ArrayList<>()));
+					todoMap.put(todoEntity.getId(), todoWithComments);
+
+				}
+			}
 		}
 
 		return new ArrayList<>(todoMap.values());
