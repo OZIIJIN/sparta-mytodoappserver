@@ -1,6 +1,7 @@
 package com.sparta.todoparty.todo.service;
 
 import com.sparta.todoparty.todo.domain.TodoDomain;
+import com.sparta.todoparty.todo.dto.MyTodoListResponseDto;
 import com.sparta.todoparty.todo.dto.TodoRequestDto;
 import com.sparta.todoparty.todo.dto.TodoResponseDto;
 import com.sparta.todoparty.todo.entity.TodoEntity;
@@ -11,9 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.RejectedExecutionException;
 
 @Service
 @RequiredArgsConstructor
@@ -63,5 +62,17 @@ public class TodoBusinessService {
 	public void deleteTodo(Long todoId, UserEntity userEntity) {
 		UserDomain userDomain = userDomainService.getUser(userEntity.getUsername());
 		todoDomainService.delete(todoId, userDomain.getUserId());
+	}
+
+	public MyTodoListResponseDto getTodosByUserId(UserEntity userEntity) {
+		UserDomain userDomain = userDomainService.getUser(userEntity.getUsername());
+
+		List<TodoDomain> todoDomainList = todoDomainService.getTodosByUserId(
+			userDomain.getUserId());
+
+		List<TodoResponseDto> todoResponseDtos = todoDomainList.stream().map(TodoResponseDto::new)
+			.toList();
+
+		return new MyTodoListResponseDto(todoResponseDtos);
 	}
 }

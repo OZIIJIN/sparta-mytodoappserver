@@ -1,6 +1,7 @@
 package com.sparta.todoparty.todo.repository;
 
 import com.sparta.todoparty.todo.entity.TodoEntity;
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -24,5 +25,10 @@ public class TodoRepositoryImpl implements TodoRepository{
 	@Override
 	public void delete(TodoEntity todoEntity) {
 		jpaRepository.delete(todoEntity);
+	}
+
+	@Override
+	public List<TodoEntity> findAllById(Long userId) {
+		return jpaRepository.findAllByCreatedBy(userId);
 	}
 }

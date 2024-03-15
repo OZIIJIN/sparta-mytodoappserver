@@ -3,6 +3,8 @@ package com.sparta.todoparty.todo.service;
 import com.sparta.todoparty.todo.domain.TodoDomain;
 import com.sparta.todoparty.todo.entity.TodoEntity;
 import com.sparta.todoparty.todo.repository.TodoRepository;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.RejectedExecutionException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -56,5 +58,11 @@ public class TodoDomainService {
 		todoEntity.complete();
 
 		return TodoDomain.from(todoEntity);
+	}
+
+	public List<TodoDomain> getTodosByUserId(Long userId) {
+		List<TodoEntity> todos = todoRepository.findAllById(userId);
+
+		return todos.stream().map(TodoDomain::from).toList();
 	}
 }

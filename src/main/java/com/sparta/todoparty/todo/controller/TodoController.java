@@ -3,20 +3,16 @@ package com.sparta.todoparty.todo.controller;
 
 import com.sparta.todoparty.common.ResponseDto;
 import com.sparta.todoparty.security.UserDetailsImpl;
+import com.sparta.todoparty.todo.dto.MyTodoListResponseDto;
 import com.sparta.todoparty.todo.dto.TodoRequestDto;
 import com.sparta.todoparty.todo.dto.TodoResponseDto;
 import com.sparta.todoparty.todo.service.TodoBusinessService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.concurrent.RejectedExecutionException;
 
 @RestController
 @RequiredArgsConstructor
@@ -56,12 +52,16 @@ public class TodoController {
 				.build());
 	}
 
-//	@ResponseBody
-//	@GetMapping("/myTodos")
-//	public List<TodoResponseDto> getPostsByUserId(
-//		@AuthenticationPrincipal UserDetailsImpl userDetails) {
-//		return todoBusinessService.getTodosByUserId(userDetails.getUserEntity());
-//	}
+	@GetMapping("/mytodos")
+	public ResponseEntity<ResponseDto<MyTodoListResponseDto>> getPostsByUserId(
+		@AuthenticationPrincipal UserDetailsImpl userDetails) {
+		MyTodoListResponseDto list = todoBusinessService.getTodosByUserId(userDetails.getUserEntity());
+		return ResponseEntity.ok()
+			.body(ResponseDto.<MyTodoListResponseDto>builder()
+				.message("내가 작성한 할일카드 조회 성공")
+				.data(list)
+				.build());
+	}
 
 	//할일카드 수정
 	@Transactional
