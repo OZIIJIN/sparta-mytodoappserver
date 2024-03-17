@@ -21,6 +21,12 @@ public class UserDomainService {
 		return UserDomain.from(user);
 	}
 
+	public UserDomain getUserBy(Long id) {
+		UserEntity user = userRepository.findById(id)
+			.orElseThrow(() -> new IllegalArgumentException("등록된 유저가 없습니다."));
+		return UserDomain.from(user);
+	}
+
 	public void signup(UserRequsetDto requsetDto) {
 		//username과 password를 받아야함, password는 passwordencoder를 통해서 받아야함
 		String username = requsetDto.getUsername();
