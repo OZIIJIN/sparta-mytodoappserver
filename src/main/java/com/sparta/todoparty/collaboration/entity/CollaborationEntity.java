@@ -31,13 +31,18 @@ public class CollaborationEntity extends TimeStamp {
 	private String todo;
 
 	@Column
+	private Boolean isAccepted;
+
+	@Column
 	private Boolean isCompleted;
+
 
 	@Builder
 	public CollaborationEntity(Long fromUserId, Long toUserId, String todo) {
 		this.fromUserId = fromUserId;
 		this.toUserId = toUserId;
 		this.todo = todo;
+		this.isAccepted = false;
 		this.isCompleted = false;
 	}
 
