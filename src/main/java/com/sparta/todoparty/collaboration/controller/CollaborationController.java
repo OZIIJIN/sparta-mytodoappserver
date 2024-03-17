@@ -11,6 +11,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -41,4 +43,35 @@ public class CollaborationController {
 				.build());
 	}
 
+	@Transactional
+	@PatchMapping("/{collaborationID}/acceptance")
+	public ResponseEntity<ResponseDto<CollaborationResponseDto>> acceptCollaboration(
+		@PathVariable Long collaborationID) {
+
+		CollaborationResponseDto collaborationResponseDto = collaborationBusinessService.acceptCollaboration(
+			collaborationID);
+
+		return ResponseEntity.ok()
+			.body(ResponseDto.<CollaborationResponseDto>builder()
+				.message("협동 일정 수락")
+				.data(collaborationResponseDto)
+				.build());
+
+	}
+
+	@Transactional
+	@PatchMapping("/{collaborationID}/complete")
+	public ResponseEntity<ResponseDto<CollaborationResponseDto>> completeCollaboration(
+		@PathVariable Long collaborationID) {
+
+		CollaborationResponseDto collaborationResponseDto = collaborationBusinessService.completeCollaboration(
+			collaborationID);
+
+		return ResponseEntity.ok()
+			.body(ResponseDto.<CollaborationResponseDto>builder()
+				.message("협동 일정 완료")
+				.data(collaborationResponseDto)
+				.build());
+
+	}
 }

@@ -32,4 +32,20 @@ public class CollaborationBusinessService {
 
 		return new CollaborationResponseDto(savedCollaboration);
 	}
+
+	public CollaborationResponseDto acceptCollaboration(Long collaborationId) {
+
+		CollaborationDomain collaborationDomain = collaborationDomainService.acceptCollaboration(
+			collaborationId);
+
+		return new CollaborationResponseDto(collaborationDomain);
+	}
+
+	public CollaborationResponseDto completeCollaboration(Long collaborationId) {
+
+		CollaborationDomain collaborationDomain = collaborationDomainService.completeCollaboration(
+			collaborationId);
+
+		return new CollaborationResponseDto(collaborationDomain);
+	}
 }

@@ -7,4 +7,5 @@ public interface CollaborationRepository {
 
 	CollaborationEntity save(CollaborationEntity collaborationEntity);
 
+	Optional<CollaborationEntity> findById(Long id);
 }

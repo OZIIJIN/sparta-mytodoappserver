@@ -53,4 +53,8 @@ public class CollaborationEntity extends TimeStamp {
 	public void completed() {
 		this.isCompleted = true;
 	}
+
+	public void accepted() {
+		this.isAccepted = true;
+	}
 }

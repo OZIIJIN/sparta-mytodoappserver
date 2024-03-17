@@ -15,4 +15,9 @@ public class CollaborationRepositoryImpl implements CollaborationRepository{
 	public CollaborationEntity save(CollaborationEntity collaborationEntity) {
 		return collaborationJpaRepository.save(collaborationEntity);
 	}
+
+	@Override
+	public Optional<CollaborationEntity> findById(Long id) {
+		return collaborationJpaRepository.findById(id);
+	}
 }
